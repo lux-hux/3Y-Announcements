@@ -77,3 +77,7 @@ print(Announcemnents.head())
 today = date.today()
 
 Announcemnents.to_csv('OUTPUT_' + str(today.year) + '-' + str(today.month) + '-' + str(today.day) + '-' + 'Announcements+Text.csv')
+
+Announcemnents_directors = Announcemnents[Announcemnents["Description"].str.contains("Change of Director's Interest Notice|Appendix 3Y")]
+
+Announcemnents_directors.to_csv('OUTPUT_' + str(today.year) + '-' + str(today.month) + '-' + str(today.day) + '-' + 'Announcements_Directors+Text.csv')
