@@ -11,6 +11,8 @@ import pyautogui as pyauto
 import shutil
 import glob
 import getpass
+import pdfplumber as plumb
+
 
 # Change directory to where the script is located
 
@@ -78,7 +80,7 @@ Announcemnents['Description'] = Announcemnents['Description'].str.replace(r'page
 
 # Save results dataframe to a .csv file: 
 
-print(Announcemnents.head())
+#print(Announcemnents.head())
 
 today = date.today()
 
@@ -87,6 +89,9 @@ Announcemnents.to_csv('OUTPUT_' + str(today.year) + '-' + str(today.month) + '-'
 # Isolate announcements concerning 'Change of Director's Interest' also known as '3Y' and save in new dataframe 
 
 Announcemnents_directors = Announcemnents[Announcemnents["Description"].str.contains("Change of Director's Interest Notice|Appendix 3Y")]
+
+Announcemnents_directors = Announcemnents_directors.reset_index(drop=True)
+
 
 Announcemnents_directors.to_csv('OUTPUT_' + str(today.year) + '-' + str(today.month) + '-' + str(today.day) + '-' + 'Announcements_Directors+Text.csv')
 
@@ -116,10 +121,15 @@ for link in Announcemnents_directors.index[0:]:
     # Navigate to the announcement's url 
     driver.get('https://www.asx.com.au/' + Announcemnents_directors.loc[link, 'Link'])
 
+
+
     # The first visit to an announcement pdf has a terms and conditions page where the form must be first accepted before accessing
 
-    if link == 1: 
+    if link == 0: 
+        print('First download of the session')
+
         element = driver.find_element_by_xpath("/html/body/div/form/input[2]")
+
         element.click()
 
      # Click browser's download button
@@ -134,8 +144,90 @@ for link in Announcemnents_directors.index[0:]:
     # Move recently downloaded pdf file into previously created directory
 
     glob.glob('*.pdf')
+
     directory = glob.glob('*.pdf')
+
     for i in directory:
+
      if i.endswith(".pdf"):
+
       os.rename(i, link_no + '-' + ticker + ".pdf")
+
     shutil.move(link_no + '-' + ticker + ".pdf", str(today.year) + '-' + str(today.month) + '-' + str(today.day) + '-3Y Announcements')
+
+os.chdir('/Users/' + user + '/Downloads/' + str(today.year) + '-' + str(today.month) + '-' + str(today.day) + '-3Y Announcements')
+
+glob.glob('*.pdf')
+directory = glob.glob('*.pdf')
+
+results = pd.DataFrame(columns=['File Name', 'Name of Director', 'Date of last notice', 'Interest', 'Nature of Interest', 'Date of change', 'No. of securities held prior to change', 'Class', 'Number acquired', \
+    'Number disposed', 'Value/Consideration', 'No. of securities held after change'])
+
+counter = 0
+
+for p in directory:
+    print('PDF file: ', p)
+    
+    with plumb.open('/Users/' + user + '/Downloads/' + str(today.year) + '-' + str(today.month) + '-' + str(today.day) + '-3Y Announcements/' + p) as pdf:
+
+     counter += 1
+
+     results.loc[counter, 'File Name'] = str(p)
+
+     pages = pdf.pages
+
+     for i,pg in enumerate(pages):
+
+      page = pdf.pages[i]
+
+    #   text = page.extract_text()
+    #   table = page.extract_table()
+
+      tables = page.find_tables()
+
+  
+      for table_iter in range(0, len(tables)):
+
+          t2_content = tables[table_iter].extract(x_tolerance = 5)
+
+          #print(t2_content)
+
+          for list_iter in t2_content:
+
+                    if list_iter[0] == 'Direct or indirect interest':
+                        results.loc[counter, 'Interest'] = str(list_iter[1])
+
+                    if 'Nature of indirect interest' in list_iter[0]:
+                        results.loc[counter, 'Nature of Interest'] = str(list_iter[1])
+
+                    if 'Detail of contract' in list_iter[0]:
+                        break
+
+                    if 'Date of change' in list_iter[0]:
+                        results.loc[counter, 'Date of change'] = str(list_iter[1])
+
+                    if 'No. of securities held prior to change' in list_iter[0]:
+                        results.loc[counter, 'No. of securities held prior to change'] = str(list_iter[1])
+
+                    if 'Class' in list_iter[0]:
+                        results.loc[counter, 'Class'] = str(list_iter[1])
+
+                    if 'Number acquired' in list_iter[0]:
+                        results.loc[counter, 'Number acquired'] = str(list_iter[1])
+
+                    if 'Number disposed' in list_iter[0]:
+                        results.loc[counter, 'Number disposed'] = str(list_iter[1])
+
+                    if 'Value/Consideration' in list_iter[0]:
+                        results.loc[counter, 'Value/Consideration'] = str(list_iter[1])
+
+                    if 'after change' in list_iter[0]:
+                        results.loc[counter, 'No. of securities held after change'] = str(list_iter[1])  
+
+                    if 'Name of Director' in list_iter[0]:
+                        results.loc[counter, 'Name of Director'] = str(list_iter[1])
+
+                    if 'Date of last notice' in list_iter[0]:
+                        results.loc[counter, 'Date of last notice'] = str(list_iter[1])  
+
+results.to_csv('OUTPUT_announcement_summary.csv')
