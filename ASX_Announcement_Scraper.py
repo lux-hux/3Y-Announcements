@@ -5,6 +5,12 @@ import pandas as pd
 import numpy as np
 import os
 from datetime import date
+import time
+from selenium import webdriver
+import pyautogui as pyauto  
+import shutil
+import glob
+import getpass
 
 # Change directory to where the script is located
 
@@ -78,6 +84,58 @@ today = date.today()
 
 Announcemnents.to_csv('OUTPUT_' + str(today.year) + '-' + str(today.month) + '-' + str(today.day) + '-' + 'Announcements+Text.csv')
 
+# Isolate announcements concerning 'Change of Director's Interest' also known as '3Y' and save in new dataframe 
+
 Announcemnents_directors = Announcemnents[Announcemnents["Description"].str.contains("Change of Director's Interest Notice|Appendix 3Y")]
 
 Announcemnents_directors.to_csv('OUTPUT_' + str(today.year) + '-' + str(today.month) + '-' + str(today.day) + '-' + 'Announcements_Directors+Text.csv')
+
+# Create new directory in donwloads folder to save the downloaded pdf's in
+
+user = getpass.getuser()
+try:
+    os.mkdir('/Users/' + user + '/Downloads/' + str(today.year) + '-' + str(today.month) + '-' + str(today.day) + '-3Y Announcements')
+except OSError as error:
+    print(error)    
+
+os.chdir('/Users/' + user + '/Downloads')
+
+# Selenium's geckodriver saved alongside script in 'file_path'
+
+driver = webdriver.Firefox(executable_path=file_path + '/geckodriver')
+
+# Iterate through 3Y announcements
+
+for link in Announcemnents_directors.index[0:]:
+    
+    # For each announcement, save the ASX code to variable 
+
+    ticker = str(Announcemnents_directors.loc[link, 'ASX Code'])
+    link_no = str(link)
+    
+    # Navigate to the announcement's url 
+    driver.get('https://www.asx.com.au/' + Announcemnents_directors.loc[link, 'Link'])
+
+    # The first visit to an announcement pdf has a terms and conditions page where the form must be first accepted before accessing
+
+    if link == 1: 
+        element = driver.find_element_by_xpath("/html/body/div/form/input[2]")
+        element.click()
+
+     # Click browser's download button
+    element2 = driver.find_element_by_xpath('//*[@id="download"]')
+    element2.click()
+
+    # Wait two seconds in order to allow download pop-up to appear or for the previous download to complete before clicking enter 
+
+    time.sleep(2)
+    pyauto.press('enter') 
+
+    # Move recently downloaded pdf file into previously created directory
+
+    glob.glob('*.pdf')
+    directory = glob.glob('*.pdf')
+    for i in directory:
+     if i.endswith(".pdf"):
+      os.rename(i, link_no + '-' + ticker + ".pdf")
+    shutil.move(link_no + '-' + ticker + ".pdf", str(today.year) + '-' + str(today.month) + '-' + str(today.day) + '-3Y Announcements')
