@@ -22,12 +22,16 @@ Python scripts to download all of the current day's announcement files, extract 
 
 ![](Example_Mapping.png)
 
-*Picture - Left: output from the Python scripts, a summary of each '3Y' announcement. Right: corresponding fields from .pdf file colour-coded. 
+*Picture - Left: output from the Python scripts, a summary of each '3Y' announcement. Right: corresponding fields from .pdf file colour-coded.*
 
 
 **Environment**
 
-
-
-
-
+- requests==2.27.1
+- selenium==4.1.2
+- tabula-py==2.3.0
+- PyAutoGUI==0.9.53
+- pandas==1.2.4
+- numpy==1.20.2
+- openpyxl==3.0.9
+- beautifulsoup4==4.10.0
