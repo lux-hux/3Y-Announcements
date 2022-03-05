@@ -22,7 +22,7 @@ Python scripts to download all of the current day's announcement files, extract 
 
 ![](example_picture.png)
 
-*Pictured - Left: the output from the Python scripts, an Excel summary of each director's transaction. Right: an example 'Appendix 3Y' announcement.
+*Pictured - Left: the output from the Python scripts, an Excel summary of each director's transaction. Right: an example 'Appendix 3Y' announcement.*
 
 
 **Environment**
