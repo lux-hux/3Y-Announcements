@@ -27,6 +27,7 @@ Python scripts to download all of the current day's announcement files, extract 
 
 **Environment**
 
+- 3.9.2 Python 
 - requests==2.27.1
 - selenium==4.1.2
 - tabula-py==2.3.0
