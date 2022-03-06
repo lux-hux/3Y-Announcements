@@ -1,3 +1,5 @@
+# Import packages
+
 import tabula
 import getpass
 import glob
@@ -7,11 +9,17 @@ import openpyxl
 from datetime import date
 import time
 
+# Set current working directory 
+
 user = getpass.getuser()
 
-announcements_directory  = '2022-3-4-3Y Announcements'
+# Change to folder where current announcements are stored 
+
+announcements_directory  = '2022-3-7-3Y Announcements'
 
 os.chdir('/Users/' + user + '/Downloads/' + announcements_directory)
+
+# Create dataframe for storing results 
 
 announcement_extract_df = pd.DataFrame(columns=['File Name'])
 
@@ -42,9 +50,9 @@ for p in directory:
 
                             announcement_extract_df.loc[counter, 'File Name'] = str(p)
 
-                            for t in range (1,3):
+                            for t in range (1,column_iter):
 
-                                if str(announcement_df.iloc[l, y + t]) == None:
+                                if str(announcement_df.iloc[l, y + t]) == "":
 
                                  continue 
 
@@ -56,26 +64,52 @@ for p in directory:
 
                         if 'Number acquired' in str(announcement_df.iloc[l, y]):
 
-                            announcement_extract_df.loc[counter, 'Number acquired'] = str(announcement_df.iloc[l, y + 1]) 
+                            for t in range (1,column_iter):
 
-                        if 'Number disposed' in str(announcement_df.iloc[l, y]):
-
-                            announcement_extract_df.loc[counter, 'Number disposed'] = str(announcement_df.iloc[l, y + 1])
-
-                        if str(announcement_df.iloc[l, y]) == 'Class': 
-
-                            for t in range (1,3):
-
-                                if str(announcement_df.iloc[l, y + t]) == None:
+                                if str(announcement_df.iloc[l, y + t]) == "nan":
 
                                  continue 
 
                                 else: 
 
-                                  announcement_extract_df.loc[counter, 'Rights or Shares'] = announcement_df.iloc[l, y + t]
+                                 announcement_extract_df.loc[counter, 'Number acquired'] = str(announcement_df.iloc[l, y + t])
 
-                                  break
-                            
+                                 print(str(announcement_df.iloc[l, y + t]))
+
+                                 break
+
+                        if 'Number disposed' in str(announcement_df.iloc[l, y]):
+
+                            for t in range (1,column_iter):
+
+                                if str(announcement_df.iloc[l, y + t]) == "nan":
+
+                                 continue 
+
+                                else: 
+
+                                 announcement_extract_df.loc[counter, 'Number disposed'] = str(announcement_df.iloc[l, y + t])
+
+                                 print(str(announcement_df.iloc[l, y + t]))
+
+                                 break
+
+                        if str(announcement_df.iloc[l, y]) == 'Class': 
+
+                            for t in range (1,column_iter):
+
+                                if str(announcement_df.iloc[l, y + t]) == "nan":
+
+                                 continue 
+
+                                else: 
+
+                                 announcement_extract_df.loc[counter, 'Class'] = str(announcement_df.iloc[l, y + t])
+
+                                 print(str(announcement_df.iloc[l, y + t]))
+
+                                 break
+
 
 rights_search = ['Rights', 'rights']
 
@@ -85,9 +119,9 @@ shares_search = ['Shares', 'shares']
 
 shares_search_sep = '|'.join(shares_search)
 
-announcement_extract_df['Rights - Class'] = announcement_extract_df['Rights or Shares'].str.contains(rights_search_sep)
+announcement_extract_df['Rights - Class'] = announcement_extract_df['Class'].str.contains(rights_search_sep)
 
-announcement_extract_df['Shares - Class'] = announcement_extract_df['Rights or Shares'].str.contains(shares_search_sep)
+announcement_extract_df['Shares - Class'] = announcement_extract_df['Class'].str.contains(shares_search_sep)
 
 announcement_extract_df['Shares - Disposed'] = announcement_extract_df['Number acquired'].str.contains(shares_search_sep)
 
@@ -96,8 +130,6 @@ announcement_extract_df['Shares - Acquired'] = announcement_extract_df['Number d
 announcement_extract_df['Rights - Disposed'] = announcement_extract_df['Number acquired'].str.contains(rights_search_sep)
 
 announcement_extract_df['Rights - Acquired'] = announcement_extract_df['Number disposed'].str.contains(rights_search_sep)
-
-announcement_extract_df.to_excel('hello.xlsx')
 
 today = date.today()
 
