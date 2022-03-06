@@ -6,7 +6,7 @@ The Australian stock exchange requires listed companies to inform the market whe
 
 ### Problem
 
-The information found in ASX announcements, such as the 'Appendix 3Y', are not made readily available to investors in a database. Instead, information on each director's transaction is a .pdf with difficult to extract fields, each stored separately behind a website link, and among a sea of irrelevant announcements. 
+The information found in ASX announcements, such as the 'Appendix 3Y', are not made readily available to investors in a database. Instead, information on directors' transactions are hidden among many other announcements, in a .pdf format with difficult to extract fields, and each stored at a seperate website link. 
 
 ### Solution
 
