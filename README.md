@@ -1,4 +1,4 @@
-# ASX-Announcements
+# ASX-3Y-Announcement-Scraper+Extractor
 
 ### Background
 
@@ -6,14 +6,14 @@ The Australian stock exchange requires listed companies to inform the market whe
 
 ### Problem
 
-The information found in ASX announcements, such as the 'Appendix 3Y', are not made readily available to investors in a database. Instead, information on each director's transaction is a .pdf with difficult to extract fields, each stored separately behind a website link, and among a sea of irrelevant announcements. 
+The information found in ASX announcements, such as the 'Appendix 3Y', are not made readily available to investors in a database. Instead, information on directors' transactions are hidden among many other announcements, in a .pdf format with difficult to extract fields, and each stored at a seperate website link. 
 
 ### Solution
 
 Python scripts to download all of the current day's announcement files, extract details of director's transactions, and save as a workbook.  
 
 **ASX_Announce_Scraper.py** 
-- Downloads a list of the current day's ASX announcements, found here: https://www.asx.com.au/asx/v2/statistics/todayAnns.do. Uses BeautifulSoup package. 
+- Downloads today's ASX announcements, found here: https://www.asx.com.au/asx/v2/statistics/todayAnns.do. Uses BeautifulSoup package. 
 - Isolates announcements with the title '3Y' or 'Change of Director's Interest Notice', navigates to the announcement's pdf link, and downloads the file. Uses Selenium (geckodriver + Firefox) and PyAutoGui packages.
 
 **3Y_Announce_PDF_Extractor.py**
@@ -22,11 +22,12 @@ Python scripts to download all of the current day's announcement files, extract 
 
 ![](example_picture.png)
 
-*Pictured - Left: the output from the Python scripts, an Excel summary of each director's transaction. Right: an example 'Appendix 3Y' announcement.
+*Pictured - Left: the output from the Python scripts, an Excel summary of each director's transaction. Right: an example 'Appendix 3Y' announcement.*
 
 
 **Environment**
 
+- 3.9.2 Python 
 - requests==2.27.1
 - selenium==4.1.2
 - tabula-py==2.3.0
