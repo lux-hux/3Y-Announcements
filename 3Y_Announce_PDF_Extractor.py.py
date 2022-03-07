@@ -50,7 +50,7 @@ for p in directory:
 
                             announcement_extract_df.loc[counter, 'File Name'] = str(p)
 
-                            for t in range (1,column_iter):
+                            for t in range (1,column_iter - 1):
 
                                 if str(announcement_df.iloc[l, y + t]) == "":
 
@@ -64,7 +64,7 @@ for p in directory:
 
                         if 'Number acquired' in str(announcement_df.iloc[l, y]):
 
-                            for t in range (1,column_iter):
+                            for t in range (1,column_iter - 1):
 
                                 if str(announcement_df.iloc[l, y + t]) == "nan":
 
@@ -80,9 +80,13 @@ for p in directory:
 
                         if 'Number disposed' in str(announcement_df.iloc[l, y]):
 
-                            for t in range (1,column_iter):
+                            for t in range (1,column_iter - 1):
+
+
 
                                 if str(announcement_df.iloc[l, y + t]) == "nan":
+
+
 
                                  continue 
 
@@ -96,7 +100,7 @@ for p in directory:
 
                         if str(announcement_df.iloc[l, y]) == 'Class': 
 
-                            for t in range (1,column_iter):
+                            for t in range (1,column_iter - y):
 
                                 if str(announcement_df.iloc[l, y + t]) == "nan":
 
