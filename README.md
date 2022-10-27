@@ -50,4 +50,4 @@ python3 main.py 1 1
 
 ### To-Do List
 
-- ASX_Announcement_Scraper.py - Currently, the PYAutoGUI module is used to press the enter key on each pdf download's confirmation screen. Ideally, the enter key should be sent to the webdriver rather than the whole system. That way, the script could be run in the background. PyAutoGUI does not currently support sending keys to specific windows on Mac. 
+- ASX_Announcement_Scraper.py - Currently, on each pdf download's confirmation screen the PYAutoGUI module presses the enter key. Ideally, the enter key should just be sent to the webdriver window rather than the whole system. That way, the script could be run in the background. PyAutoGUI does not currently support sending keys to specific windows on Mac. 
