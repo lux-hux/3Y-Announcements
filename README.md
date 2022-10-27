@@ -26,7 +26,7 @@ Python scripts to download the current day's announcement files, extract details
 
 
 
-**Instructions**
+### Instructions
 
 - Argument 1: Enter 1 to run ASX scraper or 0 otherwise
 - Argument 2: Enter 1 to run PDF extractor or 0 otherwise
@@ -35,7 +35,7 @@ Python scripts to download the current day's announcement files, extract details
 python3 main.py 1 1
 ```
 
-**Environment**
+### Environment
 
 - Python 3.10.6
 - requests==2.28.1
@@ -47,6 +47,6 @@ python3 main.py 1 1
 - openpyxl==3.0.10
 - beautifulsoup4==4.11.1
 
-**To-Do List**
+### To-Do List
 
 - ASX_Announcement_Scraper.py - Currently, the PYAutoGUI module is used to press the enter key on each pdf download's confirmation screen. Ideally, the enter key should be sent to the webdriver rather than the whole system. That way, the script could be run in the background. PyAutoGUI does not currently support sending keys to specific windows on Mac. 
