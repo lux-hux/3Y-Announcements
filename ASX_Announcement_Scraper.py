@@ -13,25 +13,25 @@ import pyautogui as pyauto
 import shutil
 import glob
 import getpass
+import pygetwindow as gw
+
 
 # Change directory to where the script is located
 
-full_path = os.path.realpath(__file__)
-file_path = os.path.dirname(full_path)
-
-os.chdir(file_path)
-
-
 class ASX_Announcement_Scrape():
-    def __init__(self, url):
+    def __init__(self, url, directory_name):
         self.url = url
         self.announcements_df = pd.DataFrame(columns=['ASX Code', 'Description', 'Link', 'Time', 'Price Sensitive'])
         self.announcements_dir_df = pd.DataFrame(columns=['ASX Code', 'Description', 'Link', 'Time', 'Price Sensitive'])
         self.today = date.today()
         self.driver = None
         self.user = getpass.getuser()
-        self.pdf_folder = str(self.today.year) + '-' + str(self.today.month) + '-' + str(self.today.day) + '-3Y Announcements'
-    
+        self.full_path = os.path.realpath(__file__) 
+        self.file_path =os.path.dirname(self.full_path)
+        self.pdf_folder = str(directory_name)
+        os.chdir(self.file_path)
+
+
     def find_announcements(self):
             
         result = requests.get(self.url)
@@ -120,7 +120,7 @@ class ASX_Announcement_Scrape():
         return announcements_dir_df
 
     def launch_webdriver(self):
-        self.driver = webdriver.Firefox(executable_path=file_path + '/geckodriver')
+        self.driver = webdriver.Firefox(executable_path=self.file_path + '/geckodriver')
  
     def scrape_links(self, data_frame = None):
 
@@ -170,7 +170,7 @@ class ASX_Announcement_Scrape():
                 time.sleep(0.5)
                 print("Waiting for prescence of download button")
 
-            element2 = self.driver.find_element_by_xpath('//*[@id="download"]')
+            element2 = self.driver.find_element(By.XPATH,'//*[@id="download"]')
             element2.click()
 
         # Pyauto (Pyautogui) does not send keys specifically to the window
@@ -179,9 +179,7 @@ class ASX_Announcement_Scrape():
 
             time.sleep(1)
 
-            pyauto.getWindowsWithTitle("Firefox").press('enter')
-
-            # pyauto.press('enter') 
+            pyauto.press('enter') 
 
             time.sleep(0.5)
 
