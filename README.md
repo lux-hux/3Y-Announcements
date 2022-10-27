@@ -20,6 +20,15 @@ Python scripts to download all the current day's announcement files, extract det
 
 - Extracts relevant details from each announcement's .pdf file, including: 'Name of director', 'Number acquired', 'Number disposed', and 'Class' (rights/shares), and saves as an excel file. Uses Tabula package. 
 
+**Instructions**
+
+Argument 1: Enter 1 to run ASX scraper or 0 otherwise
+Argument 2: Enter 1 to run PDF extractor or 0 otherwise
+
+```
+python3 main.py 1 1
+```
+
 ![](example_picture.png)
 
 *Pictured - Left: the output from the Python scripts, an Excel summary of each director's transaction. Right: an example 'Appendix 3Y' announcement.*
