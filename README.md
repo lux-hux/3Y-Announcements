@@ -10,7 +10,7 @@ The information found in ASX announcements, such as the 'Appendix 3Y', are not m
 
 ### Solution
 
-Python scripts to download the current day's announcement files, extract details of director's transactions, and save as a workbook.  
+A Python script to download the current day's announcement files, extract details of director's transactions, and save as a workbook.  
 
 **ASX_Announcement_Scraper.py** 
 - Downloads today's ASX announcements, found here: https://www.asx.com.au/asx/v2/statistics/todayAnns.do. Uses BeautifulSoup package. 
@@ -22,7 +22,7 @@ Python scripts to download the current day's announcement files, extract details
 
 ![](example_picture.png)
 
-*Pictured - Left: the output from the Python scripts, an Excel summary of each director's transaction. Right: an example 'Appendix 3Y' announcement.*
+*Pictured - Left: the output from the Python scripts, a csv summary of each director's transaction. Right: an example 'Appendix 3Y' announcement.*
 
 
 
