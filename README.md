@@ -12,11 +12,11 @@ The information found in ASX announcements, such as the 'Appendix 3Y', are not m
 
 Python scripts to download all the current day's announcement files, extract details of director's transactions, and save as a workbook.  
 
-**ASX_Announce_Scraper.py** 
+**ASX_Announcement_Scraper.py** 
 - Downloads today's ASX announcements, found here: https://www.asx.com.au/asx/v2/statistics/todayAnns.do. Uses BeautifulSoup package. 
 - Isolates announcements with the title '3Y' or 'Change of Director's Interest Notice', navigates to the announcement's pdf link, and downloads the file. Uses Selenium (geckodriver + Firefox) and PyAutoGui packages.
 
-**3Y_Announce_PDF_Extractor.py**
+**Announcement_3Y_PDF_Extractor.py**
 
 - Extracts relevant details from each announcement's .pdf file, including: 'Name of director', 'Number acquired', 'Number disposed', and 'Class' (rights/shares), and saves as an excel file. Uses Tabula package. 
 
@@ -27,12 +27,16 @@ Python scripts to download all the current day's announcement files, extract det
 
 **Environment**
 
-- 3.9.2 Python 
-- requests==2.27.1
-- selenium==4.1.2
-- tabula-py==2.3.0
+- Python 3.10.6
+- requests==2.28.1
+- selenium==4.5.0
+- tabula-py==2.5.1
 - PyAutoGUI==0.9.53
-- pandas==1.2.4
-- numpy==1.20.2
-- openpyxl==3.0.9
-- beautifulsoup4==4.10.0
+- pandas==1.5.0
+- numpy==1.23.3
+- openpyxl==3.0.10
+- beautifulsoup4==4.11.1
+
+**To-Do List**
+
+- ASX_Announcement_Scraper.py - Currently, to press accept on each pdf download's confirmation screen, PYAutoGUI presses enter. Ideally, the enter key should be sent to the webdriver rather than the whole system. That way, the script could be run in the background.  
